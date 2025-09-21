@@ -70,6 +70,7 @@ export type UserApi = {
   is_sudo: boolean;
   telegram_id: number | string;
   username: string;
+  users_usage?: number | null;
 }
 
 export type UseGetUserReturn = {

@@ -5,6 +5,7 @@ import {
   UsersIcon,
 } from "@heroicons/react/24/outline";
 import { useDashboard } from "contexts/DashboardContext";
+import useGetUser from "hooks/useGetUser";
 import { FC, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
@@ -119,10 +120,11 @@ const StatisticCard: FC<PropsWithChildren<StatisticCardProps>> = ({
 export const StatisticsQueryKey = "statistics-query-key";
 export const Statistics: FC<BoxProps> = (props) => {
   const { version } = useDashboard();
+  const { userData } = useGetUser();
   const { data: systemData } = useQuery({
     queryKey: StatisticsQueryKey,
     queryFn: () => fetch("/system"),
-    refetchInterval: 5000,
+    refetchInterval: 600_000,
     onSuccess: ({ version: currentVersion }) => {
       if (version !== currentVersion)
         useDashboard.setState({ version: currentVersion });
@@ -160,13 +162,8 @@ export const Statistics: FC<BoxProps> = (props) => {
         icon={<TotalUsersIcon />}
       />
       <StatisticCard
-        title={t("dataUsage")}
-        content={
-          systemData &&
-          formatBytes(
-            systemData.incoming_bandwidth + systemData.outgoing_bandwidth
-          )
-        }
+        title={t("UsersUsage")}
+        content={formatBytes(userData.users_usage ?? 0)}
         icon={<NetworkIcon />}
       />
       <StatisticCard
