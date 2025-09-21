@@ -162,7 +162,7 @@ export const Statistics: FC<BoxProps> = (props) => {
         icon={<TotalUsersIcon />}
       />
       <StatisticCard
-        title={t("adminUsage")}
+        title={t("UsersUsage")}
         content={formatBytes(userData.users_usage ?? 0)}
         icon={<NetworkIcon />}
       />
