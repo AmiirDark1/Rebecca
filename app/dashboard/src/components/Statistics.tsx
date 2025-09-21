@@ -124,7 +124,7 @@ export const Statistics: FC<BoxProps> = (props) => {
   const { data: systemData } = useQuery({
     queryKey: StatisticsQueryKey,
     queryFn: () => fetch("/system"),
-    refetchInterval: 60_000,
+    refetchInterval: 600_000,
     onSuccess: ({ version: currentVersion }) => {
       if (version !== currentVersion)
         useDashboard.setState({ version: currentVersion });
