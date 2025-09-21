@@ -16,7 +16,8 @@ const useGetUser = (): UseGetUserReturn => {
         discord_webook: "",
         is_sudo: false,
         telegram_id: "",
-        username: ""
+        username: "",
+        users_usage: 0
       }
     
     return {
