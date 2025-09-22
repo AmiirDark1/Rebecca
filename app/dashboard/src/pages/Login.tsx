@@ -17,7 +17,6 @@ import { FC, useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { Footer } from "components/Footer";
 import { Input } from "components/Input";
 import { fetch } from "service/http";
 import { removeAuthToken, setAuthToken } from "utils/authStorage";
@@ -140,7 +139,6 @@ export const Login: FC = () => {
           </Box>
         </HStack>
       </Box>
-      <Footer />
     </VStack>
   );
 };
