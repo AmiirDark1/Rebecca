@@ -12,13 +12,6 @@ from app import scheduler
 
 
 @dataclass
-class MemoryStat():
-    total: int
-    used: int
-    free: int
-
-
-@dataclass
 class CPUStat():
     cores: int
     percent: float
@@ -26,12 +19,6 @@ class CPUStat():
 
 def cpu_usage() -> CPUStat:
     return CPUStat(cores=psutil.cpu_count(), percent=psutil.cpu_percent())
-
-
-def memory_usage() -> MemoryStat:
-    mem = psutil.virtual_memory()
-    return MemoryStat(total=mem.total, used=mem.used, free=mem.available)
-
 
 @dataclass
 class RealtimeBandwidth:

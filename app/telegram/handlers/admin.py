@@ -36,14 +36,13 @@ from app.telegram.utils.shared import (
     time_to_string
 )
 from app.utils.store import MemoryStorage
-from app.utils.system import cpu_usage, memory_usage, readable_size, realtime_bandwidth
+from app.utils.system import cpu_usage, readable_size, realtime_bandwidth
 from config import TELEGRAM_DEFAULT_VLESS_FLOW, TELEGRAM_LOGGER_CHANNEL_ID
 
 mem_store = MemoryStorage()
 
 
 def get_system_info():
-    mem = memory_usage()
     cpu = cpu_usage()
     with GetDB() as db:
         bandwidth = crud.get_system_usage(db)
@@ -53,10 +52,6 @@ def get_system_info():
     return """\
 🎛 *CPU Cores*: `{cpu_cores}`
 🖥 *CPU Usage*: `{cpu_percent}%`
-➖➖➖➖➖➖➖
-📊 *Total Memory*: `{total_memory}`
-📈 *In Use Memory*: `{used_memory}`
-📉 *Free Memory*: `{free_memory}`
 ➖➖➖➖➖➖➖
 ⬇️ *Download Usage*: `{down_bandwidth}`
 ⬆️ *Upload Usage*: `{up_bandwidth}`
@@ -72,9 +67,6 @@ def get_system_info():
 """.format(
         cpu_cores=cpu.cores,
         cpu_percent=cpu.percent,
-        total_memory=readable_size(mem.total),
-        used_memory=readable_size(mem.used),
-        free_memory=readable_size(mem.free),
         total_bandwidth=readable_size(bandwidth.uplink + bandwidth.downlink),
         up_bandwidth=readable_size(bandwidth.uplink),
         down_bandwidth=readable_size(bandwidth.downlink),

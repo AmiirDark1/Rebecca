@@ -3,8 +3,6 @@ from pydantic import BaseModel
 
 class SystemStats(BaseModel):
     version: str
-    mem_total: int
-    mem_used: int
     cpu_cores: int
     cpu_usage: float
     total_user: int
