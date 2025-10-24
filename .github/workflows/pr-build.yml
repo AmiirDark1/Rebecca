@@ -8,44 +8,48 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DASH_DIR: ./app/dashboard
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
+      - name: Setup Node.js 20 LTS
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.17.0
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: ${{ env.DASH_DIR }}/package-lock.json
 
       - name: Install dashboard dependencies
-        working-directory: ./app/dashboard
+        working-directory: ${{ env.DASH_DIR }}
         run: npm ci
 
       - name: Build dashboard
-        working-directory: ./app/dashboard
+        working-directory: ${{ env.DASH_DIR }}
         run: VITE_BASE_API=/api/ npm run build --if-present -- --outDir build --assetsDir statics
 
       - name: Create 404.html
-        working-directory: ./app/dashboard
+        working-directory: ${{ env.DASH_DIR }}
         run: cp ./build/index.html ./build/404.html
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64
           push: true
-          tags: xmohammad1/marzban:pr-${{ github.event.pull_request.number }}
-
+          tags: ppouriaa/rebecca:pr-${{ github.event.pull_request.number }}
